@@ -1,0 +1,6 @@
+## Interface: 120105
+## Title: Rastro Estelar
+## Notes: Estrelinhas coloridas no cursor
+## Version: 0.1.0
+
+RastroEstelar.lua
