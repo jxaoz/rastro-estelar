@@ -1,6 +1,7 @@
 ## Interface: 120105
 ## Title: Rastro Estelar
-## Notes: Estrelinhas coloridas no cursor
-## Version: 0.1.0
+## Notes: Rastro colorido de estrelas ou coracoes no cursor
+## Version: 0.2.0
+## SavedVariables: RastroEstelarShape
 
 RastroEstelar.lua

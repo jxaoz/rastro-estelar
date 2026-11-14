@@ -11,10 +11,13 @@ local colors = {
 local stars, nextStar, nextColor = {}, 1, 1
 local previousX, previousY, carry
 local enabled = true
+local textures = {
+    estrela = [[Interface\AddOns\RastroEstelar\Star.tga]],
+    coracao = [[Interface\AddOns\RastroEstelar\Heart.tga]],
+}
 
 for i = 1, 72 do
     local texture = layer:CreateTexture(nil, "ARTWORK")
-    texture:SetTexture([[Interface\AddOns\RastroEstelar\Star.tga]])
     texture:Hide()
     stars[i] = {texture = texture}
 end
@@ -27,8 +30,14 @@ local function Emit(x, y)
     star.x, star.y, star.age = x, y, 0
     star.size = math.random(12, 22)
     star.drift = math.random(-18, 18)
+    local shape = RastroEstelarShape
+    star.texture:SetTexture(textures[shape] or textures.estrela)
     star.texture:SetVertexColor(unpack(color))
-    star.texture:SetRotation(math.random() * math.pi)
+    if shape == "coracao" then
+        star.texture:SetRotation((math.random() - .5) * .65)
+    else
+        star.texture:SetRotation(math.random() * math.pi)
+    end
 end
 
 local function Update(_, elapsed)
@@ -86,7 +95,22 @@ layer:SetScript("OnHide", function()
 end)
 
 SLASH_RASTROESTELAR1 = "/estrelinhas"
-SlashCmdList.RASTROESTELAR = function()
+SlashCmdList.RASTROESTELAR = function(message)
+    local option = message:match("^%s*(.-)%s*$"):lower()
+    if option == "coração" then
+        option = "coracao"
+    end
+    if textures[option] then
+        RastroEstelarShape = option
+        enabled = true
+        layer:Show()
+        print("Rastro Estelar: " .. (option == "coracao" and "corações." or "estrelas."))
+        return
+    end
+    if option ~= "" then
+        print("Use /estrelinhas, /estrelinhas estrela ou /estrelinhas coracao.")
+        return
+    end
     enabled = not enabled
     layer:SetShown(enabled)
     print("Rastro Estelar " .. (enabled and "ligado." or "desligado."))
